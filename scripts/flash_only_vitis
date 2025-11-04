@@ -1,0 +1,47 @@
+#!/remote/Xilinx/2020.1/Vitis/2020.1/bin/xsct
+
+source scripts/common_args.tcl
+
+## Flash application project
+
+puts "Connecting to hardware server"
+if { [catch {connect -url tcp:localhost:3121}] } {
+  puts "No hardware server running, starting a local hardware server instead"
+  connect
+}
+
+puts "Flashing fpga"
+
+# Reset the board
+targets -set -filter {name =~ "APU*"}
+rst -system
+after 1000
+
+# Flash the FPGA
+targets -set -filter {name =~ "xc7z020"}
+fpga [glob $params(workspace_dir)/$params(project_name)/_ide/bitstream/*.bit]
+
+# Init the PS system
+targets -set -filter {name =~ "APU*"}
+loadhw -hw $params(workspace_dir)/hw/$params(platform_name).xsa -regs
+configparams force-mem-access 1
+source $params(workspace_dir)/$params(project_name)/_ide/psinit/ps7_init.tcl
+ps7_init
+ps7_post_config
+
+if {[string length $params(prepare_debug)] != 0 && [string is true $params(prepare_debug)]} {
+  puts "Ready to attach GDB and flash program"
+} else {
+  # Flash the ELF program to core 0
+  targets -set -filter {name =~ "*A9*#0"}
+  dow $params(workspace_dir)/$params(project_name)/Debug/$params(project_name).elf
+  configparams force-mem-access 0
+  puts "Done"
+
+  puts "Reading from UART, press Ctrl-C to stop"
+  readjtaguart -start -handle stdout
+  con
+  # after 60000 exit
+  close stderr
+  vwait forever
+}

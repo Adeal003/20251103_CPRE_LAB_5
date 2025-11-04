@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# This script runs a quick test to verify the SD card is functional. 
+# It will reformat any inserted sd card back to a single FAT32 partition 
+# and write a single file `/test` with the contents `K` and read it back.
+
+# This also verifies the JTAG UART is functional.
+
+[ ! -e workspace_sdcard_test ] && \
+  ./scripts/create_vitis -xsa_path scripts/test_hardware.xsa -source_dir scripts/sdcard_test -workspace_dir workspace_sdcard_test
+./scripts/flash_vitis -xsa_path scripts/test_hardware.xsa -source_dir scripts/sdcard_test -workspace_dir workspace_sdcard_test

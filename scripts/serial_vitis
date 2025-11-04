@@ -1,0 +1,12 @@
+#!/remote/Xilinx/2020.1/Vitis/2020.1/bin/xsct
+
+puts "Connecting to hardware server"
+connect -url tcp:localhost:3121
+
+
+# Read from the UART port for 10 seconds. Output does not appear until -stop is called on stdout. This can pipe to an fp instead for real-time processing.
+targets -set -filter {name =~ "ARM*#0"}
+puts "Reading UART"
+readjtaguart -start
+after 10
+readjtaguart -stop

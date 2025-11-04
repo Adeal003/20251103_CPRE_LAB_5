@@ -1,0 +1,32 @@
+{
+    "configurations": [
+        {
+            "name": "Zedboard",
+            "includePath": [
+                "${workspaceFolder}/src",
+                "${workspaceFolder}/zedboard",
+                "${workspaceFolder}/workspace/mlp_platform/export/mlp_platform/sw/mlp_platform/standalone_domain/bspinclude/include"
+            ],
+            "defines": [
+                "ZEDBOARD",
+                "LWIP_TCP_PCB_NUM_EXT_ARGS=1"
+            ],
+            "compilerPath": "/remote/Xilinx/2020.1/Vitis/2020.1/gnu/aarch32/lin/gcc-arm-none-eabi/bin/arm-none-eabi-g++",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "linux-gcc-arm"
+        },
+        {
+            "name": "Local",
+            "includePath": [
+                "${workspaceFolder}/src"
+            ],
+            "defines": [],
+            "compilerPath": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}

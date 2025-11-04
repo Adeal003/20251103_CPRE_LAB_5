@@ -1,0 +1,71 @@
+#!/remote/Xilinx/2020.1/Vitis/2020.1/bin/xsct
+
+source scripts/common_args.tcl
+
+## Create application project
+
+if {[string length $params(xsa_path)] == 0} {
+  puts "No XSA specified with -xsa_path"
+  exit 1
+}
+
+if { [file exists $params(workspace_dir)] } {
+  puts "Workspace already exists at $params(workspace_dir)"
+  puts "Are you sure you want to delete the workspace and create a new one? (y/N)"
+  gets stdin confirmation
+  if { [string length $confirmation] == 0 || ![string is true $confirmation] } {
+    puts "Cancelling"
+    exit 1
+  }
+  # Will not follow symlinks
+  exec rm -rf "$params(workspace_dir)"
+}
+
+puts "Copying hardware design over"
+exec mkdir -p "$params(workspace_dir)/hw"
+exec cp "$params(xsa_path)" "$params(workspace_dir)/hw/$params(platform_name).xsa"
+
+puts "Using workspace at $params(workspace_dir)"
+setws "$params(workspace_dir)"
+
+puts "Creating project at $params(workspace_dir)/$params(project_name) for $params(xsa_path)"
+puts "app create -name '$params(project_name)' -hw '$params(workspace_dir)/hw/$params(platform_name).xsa' -proc '$params(proc_name)' -template '$params(template)' -lang 'c++' -platform '$params(platform_name)'"
+app create -name "$params(project_name)" -hw "$params(workspace_dir)/hw/$params(platform_name).xsa" -proc "$params(proc_name)" -template "$params(template)" -lang "c++"
+
+## Pull in source files
+
+# XSCT does not support soft links when importing sources, so symlink in the source folder itself
+puts "Linking source directory from $params(source_dir) to $params(workspace_dir)/$params(project_name)/src/framework"
+exec ln -s [file normalize $params(source_dir)] $params(workspace_dir)/$params(project_name)/src/framework
+
+puts "Linking xilsd library source from $params(framework_dir)/zedboard to $params(workspace_dir)/$params(project_name)/src/zedboard"
+exec ln -s [file normalize $params(framework_dir)/zedboard] $params(workspace_dir)/$params(project_name)/src/zedboard
+
+puts "Setting include path to include the framework folder and xilsd library"
+# These are relative to the build folder, Debug or Release, so start with ../
+app config -name $params(project_name) -add include-path "../src/framework"
+app config -name $params(project_name) -add include-path "../src/zedboard"
+
+app config -name $params(project_name) -add compiler-misc "-std=c++17 -O3"
+app config -name $params(project_name) -add define-compiler-symbols "ZEDBOARD"
+app config -name $params(project_name) -add linker-misc "-Wl,--defsym=_HEAP_SIZE=0x8000000"
+
+puts "Generating platform"
+platform active $params(platform_name)
+platform generate
+
+puts "Configuring SD card filesystem library"
+
+bsp setlib xilffs
+bsp config enable_exfat true
+bsp config set_fs_rpath 2
+bsp config use_lfn 3
+
+bsp setlib lwip211
+
+bsp config stdin ps7_coresight_comp_0
+bsp config stdout ps7_coresight_comp_0
+bsp regenerate
+
+puts "Compiling the project"
+app build -name $params(project_name)

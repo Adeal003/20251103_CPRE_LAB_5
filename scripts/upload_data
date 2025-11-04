@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Run inference first, it will encounter an error and enter the file transfer server.
+# Otherwise, use `./scripts/file_transfer_vitis` to start the file transfer server directly.
+# Once started, it is listening for curl requests
+
+# Reformat SD card
+echo curl 192.168.1.2 -X REFORMAT
+curl 192.168.1.2 -X REFORMAT
+
+# Make all directories
+find data -type d -exec /bin/sh -c "echo && echo curl 192.168.1.2/{}/ -X POST && curl 192.168.1.2/{}/ -X POST -H Expect:" \;
+
+# Upload all files
+find data -type f -exec /bin/sh -c "echo && echo curl 192.168.1.2/{} -X POST --data-binary '@{}' && curl 192.168.1.2/{} -X POST --data-binary '@{}' --progress-bar -H Expect: | cat" \;
+
+echo
+
+# Later, just use curl directly to download output files if needed
+# curl 192.168.1.2/output.bin

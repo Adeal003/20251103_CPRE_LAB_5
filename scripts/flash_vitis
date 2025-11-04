@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+./scripts/build_vitis "$@"
+./scripts/flash_only_vitis "$@"
