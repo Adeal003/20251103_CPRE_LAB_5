@@ -2,11 +2,9 @@
  * Simple Standalone Performance Test
  * 
  * 
- * INSTRUCTIONS:
- * 1. Save this file as: test_performance.cpp
- * 2. Compile it: 
+ * 1. Compile it: 
  *    g++ -o test_perf test_performance.cpp src/layers/Convolutional.cpp -Isrc -std=c++11 -O2
- * 3. Run it: 
+ * 2.. Run it: 
  *    ./test_perf
  * 
  * This will test just the layer computation without needing Model class or data files.
@@ -138,7 +136,7 @@ public:
     }
     
     // ========================================================================
-    // CACHE-OPTIMIZED IMPLEMENTATION (Your new version)
+    // CACHE-OPTIMIZED IMPLEMENTATION (New Version)
     // ========================================================================
     void computeOptimized(const LayerData& dataIn) const {
         const auto& inputDims = inParams.dims;
@@ -365,20 +363,19 @@ int main() {
  * COMPILATION AND RUNNING INSTRUCTIONS
  * ============================================================================
  * 
- * STEP 1: Save this file as test_performance.cpp
  * 
- * STEP 2: Compile (choose ONE option):
+ * STEP 1: Compile (choose ONE option):
  * 
  * Option A - Standalone (easiest):
  *   g++ -o test_perf test_performance.cpp -std=c++11 -O2
  * 
- * Option B - With your existing source files (if you get linker errors):
+ * Option B - With our existing source files (if you get linker errors):
  *   g++ -o test_perf test_performance.cpp -std=c++11 -O2 -Isrc
  * 
- * STEP 3: Run:
+ * STEP 2: Run:
  *   ./test_perf
  * 
- * STEP 4: Visualize:
+ * STEP 3: Visualize:
  *   python visualize_results.py
  * 
  * ============================================================================
@@ -421,6 +418,6 @@ int main() {
  * ============================================
  * 
  * Results saved to: layer1_benchmark_results.csv
- * Now run: python visualize_results.py
+ * Post-Results run: python visualize_results.py
  * 
  */
