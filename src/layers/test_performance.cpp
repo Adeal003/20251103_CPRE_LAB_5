@@ -243,13 +243,13 @@ int main() {
     // Dimensions based on your Lab 2 results:
     // Input: 64x64x3, Output: 56x56x32, Kernel: 5x5
     // ========================================================================
-    
-    std::cout << "Setting up test layer..." << std::endl;
-    
-    LayerParams inputParams(sizeof(fp32), {64, 64, 3});    // Input: 64x64x3
-    LayerParams outputParams(sizeof(fp32), {56, 56, 32});  // Output: 56x56x32
-    LayerParams weightParams(sizeof(fp32), {5, 5, 3, 32}); // Kernel: 5x5, 3->32 channels
-    LayerParams biasParams(sizeof(fp32), {32});            // 32 biases
+       
+    std::cout << "Setting up test layer (matching Lab 2 Layer 1)..." << std::endl;
+
+    LayerParams inputParams(sizeof(fp32), {60, 60, 32});    // Changed: 32 channels 
+    LayerParams outputParams(sizeof(fp32), {56, 56, 32});  
+    LayerParams weightParams(sizeof(fp32), {5, 5, 32, 32}); // Changed: 32→32
+    LayerParams biasParams(sizeof(fp32), {32});
     
     SimpleConvLayer layer(inputParams, outputParams, weightParams, biasParams);
     
