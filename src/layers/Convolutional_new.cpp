@@ -234,20 +234,20 @@ namespace ML
     }
 
     // ============================================================================
-    // PLACEHOLDER IMPLEMENTATIONS (To be implemented in later parts of Lab 5)
+    // PLACEHOLDER IMPLEMENTATIONS (To be implemented in later parts of Lab 5 - Optional, I'll try to come back to this if I have time)
     // ============================================================================
     
     void ConvolutionalLayer::computeTiled(const LayerData &dataIn) const
     {
         // TODO: Part 2 of Lab 5 - Implement tiling with block sizes
-        // For now, use the cache-optimized version as baseline
+        // For now, using the cache-optimized version as baseline
         computeThreaded(dataIn);
     }
 
     void ConvolutionalLayer::computeSIMD(const LayerData &dataIn) const
     {
         // TODO: Part 3 of Lab 5 - Implement SIMD optimizations
-        // For now, use the cache-optimized version as baseline
+        // For now, using the cache-optimized version as baseline
         computeThreaded(dataIn);
     }
 
