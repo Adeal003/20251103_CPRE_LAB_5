@@ -3,7 +3,7 @@
  * CORRECTED VERSION - Compares tiling against NAIVE baseline
  * 
  * IMPORTANT: The lab asks for "speedup over non-tiled version of the non-optimized version"
- * This means we compare TILED implementation vs NAIVE (non-optimized) implementation
+ * This means I need to compare TILED implementation vs NAIVE (non-optimized) implementation
  * 
  * COMPILE:
  *   g++ -o test_tiling test_tiling.cpp -std=c++11 -O2
