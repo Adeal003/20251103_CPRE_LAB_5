@@ -352,6 +352,7 @@ void runTests() {
 
 } // namespace ML
 
+
 #ifdef ZEDBOARD
 extern "C"
 int main() {
@@ -368,7 +369,8 @@ int main() {
     FileServer::start_file_transfer_server();
 }
 #else
-int main() {
-    ML::runTests();
-}
+// Remove or comment out this main() when building with test_performance.cpp
+// int main() {
+//     ML::runTests();
+// }
 #endif
