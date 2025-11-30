@@ -13,8 +13,6 @@ BIN = $(BDIR)
 SDIR = src
 EXE = $(BIN)/ml
 EXE_DEBUG = $(BIN)/ml_debug
-EXE_TILL = $(BIN)/ml_till
-EXE_PERF = $(BIN)/ml_perf
 
 # ifeq ($(OS), Windows_NT) # Windows
 # 	CC_Linux = 
@@ -73,10 +71,7 @@ build: dir_struct $(EXE)
 rebuild: clean build
 
 build_debug: dir_struct $(EXE_DEBUG)
-redebug: clean build_debugb
-
-build_till: dir_struct $(EXE_TILL)
-build_perf: dir_struct $(EXE_PERF)
+redebug: clean build_debug
 
 # Generate object files
 $(BIN)/ml: $(OBJS)
@@ -84,26 +79,6 @@ $(BIN)/ml: $(OBJS)
 
 $(BIN)/ml_debug: $(OBJS_DEBUG)
 	$(CC_LINUX) $(CC_FLAGS_DEBUG) $(OBJS_DEBUG) -o $@ $(CC_FLAGS_END)
-
-# Filter out ML.o and test files to avoid multiple main() definitions
-OBJS_NO_MAIN = $(filter-out $(BDIR)/ML.o $(BDIR)/layers/test_performance.o $(BDIR)/layers/test_tiling.o, $(OBJS))
-
-$(EXE_PERF): $(OBJS_NO_MAIN) $(BDIR)/layers/test_performance.o
-	mkdir -p $(dir $@)
-	$(CC_LINUX) $(CC_FLAGS) $^ -o $@ $(CC_FLAGS_END)
-
-$(EXE_TILL): $(OBJS_NO_MAIN) $(BDIR)/layers/test_tiling.o
-	mkdir -p $(dir $@)
-	$(CC_LINUX) $(CC_FLAGS) $^ -o $@ $(CC_FLAGS_END)
-
-# Build test object files
-$(BDIR)/layers/test_performance.o: $(SDIR)/layers/test_performance.cpp
-	mkdir -p $(dir $@)
-	$(CC_LINUX) $(CC_FLAGS) -c $(INC) -o $@ $<
-
-$(BDIR)/layers/test_tiling.o: $(SDIR)/layers/test_tiling.cpp
-	mkdir -p $(dir $@)
-	$(CC_LINUX) $(CC_FLAGS) -c $(INC) -o $@ $<
 
 $(BDIR)/%.o: $(SDIR)/%.cpp
 	mkdir -p $(dir $@)
