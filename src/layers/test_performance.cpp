@@ -17,7 +17,7 @@
 #include <fstream>
 #include <iomanip>
 
-// Simple type definitions (matching your project)
+// Simple type definitions 
 typedef float fp32;
 
 // ============================================================================
@@ -90,7 +90,7 @@ public:
     const LayerData& getOutputData() const { return outData; }
     
     // ========================================================================
-    // NAIVE IMPLEMENTATION (Your original - baseline for comparison)
+    // NAIVE IMPLEMENTATION (baseline for comparison)
     // ========================================================================
     void computeNaive(const LayerData& dataIn) const {
         const auto& inputDims = inParams.dims;
@@ -136,7 +136,7 @@ public:
     }
     
     // ========================================================================
-    // CACHE-OPTIMIZED IMPLEMENTATION (New Version)
+    // CACHE-OPTIMIZED IMPLEMENTATION 
     // ========================================================================
     void computeOptimized(const LayerData& dataIn) const {
         const auto& inputDims = inParams.dims;
@@ -239,8 +239,8 @@ int main() {
     std::cout << "============================================\n" << std::endl;
     
     // ========================================================================
-    // Setup: Create a layer similar to your Layer 1
-    // Dimensions based on your Lab 2 results:
+    // Setup: Create a layer similar to our Layer 1
+    // Dimensions based on our Lab 2 results:
     // Input: 64x64x3, Output: 56x56x32, Kernel: 5x5
     // ========================================================================
        
@@ -369,7 +369,7 @@ int main() {
  * Option A - Standalone (easiest):
  *   g++ -o test_perf test_performance.cpp -std=c++11 -O2
  * 
- * Option B - With our existing source files (if you get linker errors):
+ * Option B - With our existing source files (if we get linker errors):
  *   g++ -o test_perf test_performance.cpp -std=c++11 -O2 -Isrc
  * 
  * STEP 2: Run:
@@ -377,47 +377,6 @@ int main() {
  * 
  * STEP 3: Visualize:
  *   python visualize_results.py
- * 
  * ============================================================================
- * EXPECTED OUTPUT
- * ============================================================================
- * 
- * ============================================
- *   LAB 5: CACHE OPTIMIZATION BENCHMARK
- * ============================================
- * 
- * Setting up test layer...
- * Input size:  64x64x3
- * Output size: 56x56x32
- * Kernel size: 5x5
- * 
- * [1/2] Benchmarking NAIVE implementation...
- *   Progress: 10/100
- *   Progress: 20/100
- *   ...
- * 
- * Naive Results:
- *   Mean:   45.234 ms
- *   Std:    1.123 ms
- * 
- * [2/2] Benchmarking CACHE-OPTIMIZED implementation...
- *   Progress: 10/100
- *   ...
- * 
- * Optimized Results:
- *   Mean:   18.567 ms
- *   Std:    0.789 ms
- * 
- * ============================================
- *               FINAL RESULTS
- * ============================================
- * Naive mean:           45.234 ms
- * Cache-Optimized mean: 18.567 ms
- * Speedup:              2.436x
- * Improvement:          58.9%
- * ============================================
- * 
- * Results saved to: layer1_benchmark_results.csv
- * Post-Results run: python visualize_results.py
  * 
  */
